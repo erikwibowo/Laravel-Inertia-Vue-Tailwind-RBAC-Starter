@@ -5,7 +5,11 @@ module.exports = {
         "./resources/**/*.vue",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                'Nunito': ["Nunito"],
+            },
+        },
     },
     plugins: [require("@tailwindcss/forms")],
 };
