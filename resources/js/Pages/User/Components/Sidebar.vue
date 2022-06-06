@@ -3,15 +3,21 @@
         <div class="overflow-y-auto py-4 px-6 bg-slate-50 dark:bg-slate-800">
             <div class="flex flex-col items-center pb-5">
                 <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
-                <h5 class="mb-1 text-xl font-medium text-slate-900 dark:text-white">Bonnie Green</h5>
-                <span class="text-sm text-slate-500 dark:text-slate-400">Visual Designer</span>
+                <h5 class="mb-1 text-xl font-medium text-slate-900 dark:text-white">{{ $page.props.auth.user.name }}</h5>
+                <span class="text-sm text-slate-500 dark:text-slate-400">{{ $page.props.auth.user.email }}</span>
             </div>
-            <ul class="space-y-2">
-                <li>
-                    <a href="#" class="flex items-center p-2 text-base font-normal text-slate-900 rounded-lg dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">
-                    <svg class="w-6 h-6 text-slate-500 transition duration-75 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
+            <ul class="space-y-2 text-slate-900 dark:text-white">
+                <li class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+                    <Link :href="route('home')" class="flex items-center p-2 text-base font-normal" :class="{ 'active': $page.url.startsWith('/user/home') }">
+                    <svg class="w-6 h-6 transition duration-75 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
                     <span class="ml-3">Dashboard</span>
-                    </a>
+                    </Link>
+                </li>
+                <li class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+                    <Link :href="route('user.index')" class="flex items-center p-2 text-base font-normal rounded-lg" :class="{ 'active': $page.url.startsWith('/user/user') }">
+                    <svg class="w-6 h-6 transition duration-75 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
+                    <span class="ml-3">User</span>
+                    </Link>
                 </li>
                 <li>
                     <button @click="toggleSidebar" type="button" class="flex items-center p-2 w-full text-base font-normal text-slate-900 rounded-lg transition duration-75 group hover:bg-slate-100 dark:text-white dark:hover:bg-slate-700 content-between">
@@ -74,8 +80,12 @@
     </aside>
 </template>
 <script>
+import { Link } from '@inertiajs/inertia-vue3';
 export default {
     name: "Sidebar",
+    components: {
+        Link
+    },
     data() {
         return {
             isOpen: false,

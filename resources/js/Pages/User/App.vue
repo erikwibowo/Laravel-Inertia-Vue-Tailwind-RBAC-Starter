@@ -1,7 +1,7 @@
 <template>
     <div class="flex w-full">
         <Sidebar />
-        <div class="w-full">
+        <div class="w-full min-h-screen block bg-white dark:bg-slate-900">
             <Navbar />
             <slot />
         </div>
