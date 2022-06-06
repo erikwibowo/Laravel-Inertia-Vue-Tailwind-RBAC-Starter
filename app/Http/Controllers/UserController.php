@@ -97,7 +97,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name'                  => ['required', 'string', 'max:255'],
             'email'                 => 'unique:users,email,'.$id,
-            'password'              => 'sometimes|string|min:8|confirmed',
+            'password'              => 'nullable|string|min:8|confirmed',
             'password_confirmation' => 'sometimes|required_with:password|same:password',
         ]);
 
@@ -106,7 +106,7 @@ class UserController extends Controller
             $user->update([
                 'name'      => $request->name,
                 'email'     => $request->email,
-                'password'  => Hash::make($request->password),
+                'password'  => $request->password ? Hash::make($request->password) : $user->password,
             ]);
             return to_route('user.index')->with('success', 'User '.$user->name.' updated successfully.');
         } catch (\Throwable $th) {
