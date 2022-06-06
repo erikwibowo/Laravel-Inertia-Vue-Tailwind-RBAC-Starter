@@ -1,4 +1,5 @@
 <template>
+<Head title="Login" />
     <div class="flex w-full min-h-screen p-4 bg-white dark:bg-slate-700">
         <div class="m-auto p-4 w-96 bg-white rounded-lg border border-slate-200 shadow-md sm:p-6 lg:p-8 dark:bg-slate-800 dark:border-slate-700">
             <form class="space-y-6" @submit.prevent="login">
@@ -38,11 +39,14 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
-import { Inertia } from '@inertiajs/inertia'
+
+import { Head } from '@inertiajs/inertia-vue3';
 
 export default {
     name: 'Login',
+    components: {
+        Head
+    },
     props: {
         errors: Object,
     },
