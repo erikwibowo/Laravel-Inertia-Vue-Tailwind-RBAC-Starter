@@ -48,7 +48,7 @@ export default {
     },
     data() {
         return {
-            form: reactive({
+            form: this.$inertia.form({
                 email: "",
                 password: "",
                 remember: false,
@@ -59,12 +59,13 @@ export default {
     methods: {
         login() {
             this.isLoading = true;
-            Inertia.post("/login", this.form, {
+            this.form.post(this.route('login'), {
                 onSuccess: (data) => {
                     this.isLoading = false;
                 },
                 onError: (data) => {
                     this.isLoading = false;
+                    this.form.reset('password');
                 },
             });
         }

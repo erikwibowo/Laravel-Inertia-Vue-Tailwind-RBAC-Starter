@@ -3,8 +3,8 @@
         <Sidebar />
         <div class="w-full">
             <Navbar />
+            <slot />
         </div>
-        <slot />
     </div>
     <!-- ./wrapper -->
 </template>

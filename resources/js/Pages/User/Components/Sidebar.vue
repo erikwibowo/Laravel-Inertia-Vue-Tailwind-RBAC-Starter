@@ -1,6 +1,11 @@
 <template>
     <aside class="hidden md:flex min-h-screen" aria-label="Sidebar">
-        <div class="overflow-y-auto py-4 px-3 bg-gray-50 dark:bg-gray-800">
+        <div class="overflow-y-auto py-4 px-6 bg-gray-50 dark:bg-gray-800">
+            <div class="flex flex-col items-center pb-5">
+                <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
+                <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">Bonnie Green</h5>
+                <span class="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
+            </div>
             <ul class="space-y-2">
                 <li>
                     <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
