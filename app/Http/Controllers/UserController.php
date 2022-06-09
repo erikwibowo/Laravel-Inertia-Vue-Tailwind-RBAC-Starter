@@ -21,7 +21,7 @@ class UserController extends Controller
             'users' => User::when($request->q, function($query, $q){
                 $query->where('name', 'LIKE', "%".$q."%");
                 $query->Orwhere('email', 'LIKE', "%".$q."%");
-            })->orderBy('id', 'desc')->paginate(10)
+            })->orderBy('id', 'desc')->paginate(10)->onEachSide(1)
         ]);
     }
 

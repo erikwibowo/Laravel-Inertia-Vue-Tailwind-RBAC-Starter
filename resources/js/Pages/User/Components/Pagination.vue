@@ -1,6 +1,6 @@
 <template>
     <div v-if="links.length > 3" class="text-slate-600 dark:text-slate-400">
-        <div class="flex flex-wrap -mb-1">
+        <div class="flex flex-wrap -mb-1 mx-auto">
             <template v-for="(link, p) in links" :key="p">
                 <div v-if="link.url === null" class="mr-1 mb-1 px-3 py-2 text-sm leading-4 text-gray-400 rounded border border-slate-200 dark:border-slate-600"
                     v-html="link.label" />

@@ -43,7 +43,7 @@
                 </li> -->
                 <ul class="pt-2 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
                     <li>
-                        <Link :href="route('logout')" method="post" class="flex items-center py-2 px-8 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-opacity-90 dark:text-white group bg-red-600">
+                        <Link :href="route('logout')" method="post" class="flex items-center py-2 px-8 text-base font-normal text-white rounded-lg transition duration-75 hover:bg-opacity-90 dark:text-white group bg-red-600">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
