@@ -2,25 +2,55 @@
     <aside class="hidden md:flex min-h-screen" aria-label="Sidebar">
         <div class="overflow-y-auto py-4 px-6 bg-slate-50 dark:bg-slate-800">
             <div class="flex flex-col items-center pb-5">
-                <img class="mb-3 w-24 h-24 rounded-full shadow-lg" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
-                <h5 class="mb-1 text-xl font-medium text-slate-900 dark:text-white">{{ $page.props.auth.user.name }}</h5>
-                <span class="text-sm text-slate-500 dark:text-slate-400">{{ $page.props.auth.user.email }}</span>
+                <img
+                    class="mb-3 w-24 h-24 rounded-full shadow-lg"
+                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                    alt="Bonnie image"
+                />
+                <h5
+                    class="mb-1 text-xl font-medium text-slate-900 dark:text-white"
+                >
+                    {{ $page.props.auth.user.name }}
+                </h5>
+                <span class="text-sm text-slate-500 dark:text-slate-400">{{
+                    $page.props.auth.user.email
+                }}</span>
             </div>
             <ul class="space-y-2 text-slate-900 dark:text-white">
-                <li class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
-                    <Link :href="route('home')" class="flex items-center py-2 px-8 text-base font-normal" :class="{ 'active': $page.url.startsWith('/user/home') }">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    <span class="ml-3">Dashboard</span>
+                <li
+                    class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+                >
+                    <Link
+                        :href="route('home')"
+                        class="flex items-center py-2 px-8 text-base font-normal"
+                        :class="{ active: $page.url.startsWith('/user/home') }"
+                    >
+                        <HomeIcon class="h-6 w-6" />
+                        <span class="ml-3">Dashboard</span>
                     </Link>
                 </li>
-                <li class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
-                    <Link :href="route('user.index')" class="flex items-center py-2 px-8 text-base font-normal rounded-lg" :class="{ 'active': $page.url.startsWith('/user/user') }">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <span class="ml-3">User</span>
+                <li
+                    class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+                >
+                    <Link
+                        :href="route('user.index')"
+                        class="flex items-center py-2 px-8 text-base font-normal rounded-lg"
+                        :class="{ active: $page.url.startsWith('/user/user') }"
+                    >
+                        <UserIcon class="h-6 w-6" />
+                        <span class="ml-3">User</span>
+                    </Link>
+                </li>
+                <li
+                    class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+                >
+                    <Link
+                        :href="route('role.index')"
+                        class="flex items-center py-2 px-8 text-base font-normal rounded-lg"
+                        :class="{ active: $page.url.startsWith('/user/role') }"
+                    >
+                        <AdjustmentsIcon class="h-6 w-6" />
+                        <span class="ml-3">Role</span>
                     </Link>
                 </li>
                 <!-- <li>
@@ -41,13 +71,17 @@
                         </li>
                     </ul>
                 </li> -->
-                <ul class="pt-2 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
+                <ul
+                    class="pt-2 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700"
+                >
                     <li>
-                        <Link :href="route('logout')" method="post" class="flex items-center py-2 px-8 text-base font-normal text-white rounded-lg transition duration-75 hover:bg-opacity-90 dark:text-white group bg-red-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        <span class="ml-3">Sign Out</span>
+                        <Link
+                            :href="route('logout')"
+                            method="post"
+                            class="flex items-center py-2 px-8 text-base font-normal text-white rounded-lg transition duration-75 hover:bg-opacity-90 dark:text-white group bg-red-600"
+                        >
+                            <LogoutIcon class="h-6 w-6" />
+                            <span class="ml-3">Sign Out</span>
                         </Link>
                     </li>
                 </ul>
@@ -56,21 +90,26 @@
     </aside>
 </template>
 <script>
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link } from "@inertiajs/inertia-vue3";
+import { UserIcon, HomeIcon, LogoutIcon, AdjustmentsIcon } from "@heroicons/vue/outline";
 export default {
     name: "Sidebar",
     components: {
-        Link
+        Link,
+        UserIcon,
+        HomeIcon,
+        LogoutIcon,
+        AdjustmentsIcon
     },
     data() {
         return {
             isOpen: false,
-        }
+        };
     },
     methods: {
         toggleSidebar() {
             this.isOpen = !this.isOpen;
         },
     },
-}
+};
 </script>

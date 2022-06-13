@@ -1,12 +1,12 @@
 <template>
-    <Head title="User" />
+    <Head title="Role" />
     <div class="p-4">
         <!-- Breadcrumb -->
         <nav
             class="block md:flex mt-2 md:mt-0 justify-between py-3 px-5 text-slate-700 bg-slate-50 rounded-lg border border-slate-200 dark:bg-slate-800 dark:border-slate-700"
             aria-label="Breadcrumb"
         >
-            <p class="font-bold text-slate-800 dark:text-slate-200">User</p>
+            <p class="font-bold text-slate-800 dark:text-slate-200">Role</p>
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
                     <Link
@@ -22,7 +22,7 @@
                         <ChevronRightIcon class="w-6 h-4 text-slate-400" />
                         <span
                             class="ml-1 text-sm font-medium text-slate-500 md:ml-2 dark:text-slate-400"
-                            >User</span
+                            >Role</span
                         >
                     </div>
                 </li>
@@ -34,7 +34,7 @@
             >
                 <div class="flex">
                     <Link
-                        :href="route('user.create')"
+                        :href="route('role.create')"
                         type="button"
                         class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                     >
@@ -78,8 +78,8 @@
                 </thead>
                 <tbody>
                     <tr
-                        v-for="(user, index) in users.data"
-                        :key="user.id"
+                        v-for="(role, index) in roles.data"
+                        :key="role.id"
                         class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600"
                     >
                         <th
@@ -89,20 +89,20 @@
                             {{ index + 1 }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ user.name }}
+                            {{ role.name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ user.email }}
+                            {{ role.email }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ user.created_at }}
+                            {{ role.created_at }}
                         </td>
                         <td class="px-6 py-4 text-center">
                             <div
                                 class="inline-flex rounded-md shadow-sm"
                             >
                                 <Link
-                                    :href="route('user.edit', user.id)"
+                                    :href="route('role.edit', role.id)"
                                     type="button"
                                     class="inline-flex items-center py-1 px-2 text-sm font-medium text-white bg-blue-600 rounded-l-lg border border-gray-200 hover:bg-blue-400 hover:text-white focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-blue-700 dark:border-blue-600 dark:text-white dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:text-white"
                                 >
@@ -110,7 +110,7 @@
                                     Edit
                                 </Link>
                                 <Link
-                                    :href="route('user.destroy', user.id)"
+                                    :href="route('role.destroy', role.id)"
                                     method="delete"
                                     type="button"
                                     class="inline-flex items-center py-1 px-2 text-sm font-medium text-white bg-red-600 rounded-r-md border border-red-200 hover:bg-red-400 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-red-700 dark:border-red-600 dark:text-white dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-500 dark:focus:text-white"
@@ -124,7 +124,7 @@
                 </tbody>
             </table>
         </div>
-        <Pagination class="mt-2 flex" :links="users.links" />
+        <Pagination class="mt-2 flex" :links="roles.links" />
     </div>
 </template>
 <script>
@@ -160,14 +160,15 @@ export default {
         };
     },
     props: {
-        users: Object,
+        roles: Object,
+        permissions: Object,
         flash: Object,
         q: String,
     },
     methods: {
         search: _.debounce(function () {
             this.$inertia.replace(
-                route("user.index", {
+                route("role.index", {
                     q: this.q,
                 })
             );
