@@ -106,7 +106,7 @@
                             </p>
                         </td>
                         <td class="px-6 py-4">
-                            {{ role.created_at }}
+                            {{ moment(role.created_at) }}
                         </td>
                         <td class="px-6 py-4 text-center">
                             <div class="inline-flex rounded-md shadow-sm">
@@ -138,6 +138,7 @@
 </template>
 <script>
 import { Head, Link } from "@inertiajs/inertia-vue3";
+import moment from "moment";
 import {
     HomeIcon,
     SearchIcon,
@@ -186,6 +187,9 @@ export default {
                 })
             );
         }, 500),
+        moment(date) {
+            return moment(date).format("D-MM-YYYY HH:mm");
+        }
     },
 };
 </script>

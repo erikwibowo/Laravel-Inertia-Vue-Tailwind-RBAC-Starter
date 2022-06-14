@@ -96,7 +96,7 @@
                             {{ permission.guard_name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ permission.created_at }}
+                            {{ moment(permission.created_at) }}
                         </td>
                         <td class="px-6 py-4 text-center">
                             <div class="inline-flex rounded-md shadow-sm">
@@ -136,6 +136,7 @@ import {
     PencilIcon,
     TrashIcon,
 } from "@heroicons/vue/outline";
+import moment from "moment";
 import App from "../App.vue";
 import _ from "lodash";
 import Pagination from "../Components/Pagination.vue";
@@ -175,6 +176,9 @@ export default {
                 })
             );
         }, 500),
+        moment(date) {
+            return moment(date).format("D-MM-YYYY HH:mm");
+        }
     },
 };
 </script>
