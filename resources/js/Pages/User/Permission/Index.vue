@@ -1,12 +1,12 @@
 <template>
-    <Head title="Role" />
+    <Head title="Permission" />
     <div class="p-4">
         <!-- Breadcrumb -->
         <nav
             class="block md:flex mt-2 md:mt-0 justify-between py-3 px-5 text-slate-700 bg-slate-50 rounded-lg border border-slate-200 dark:bg-slate-800 dark:border-slate-700"
             aria-label="Breadcrumb"
         >
-            <p class="font-bold text-slate-800 dark:text-slate-200">Role</p>
+            <p class="font-bold text-slate-800 dark:text-slate-200">Permission</p>
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
                     <Link
@@ -22,7 +22,7 @@
                         <ChevronRightIcon class="w-6 h-4 text-slate-400" />
                         <span
                             class="ml-1 text-sm font-medium text-slate-500 md:ml-2 dark:text-slate-400"
-                            >Role</span
+                            >Permission</span
                         >
                     </div>
                 </li>
@@ -41,7 +41,7 @@
                         <PlusIcon class="w-4 h-4 mr-1" />
                         Add
                     </button>
-                    <Create v-show="showModal" @close-modal="showModal = false" :errors="errors" :permissions="permissions" />
+                    <Create v-show="showModal" @close-modal="showModal = false" :errors="errors" />
                 </div>
                 <div class="">
                     <div class="relative">
@@ -73,15 +73,14 @@
                         <th scope="col" class="px-6 py-3">#</th>
                         <th scope="col" class="px-6 py-3">Name</th>
                         <th scope="col" class="px-6 py-3">Guard</th>
-                        <th scope="col" class="px-6 py-3">Permissions</th>
                         <th scope="col" class="px-6 py-3">Created</th>
                         <th scope="col" class="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
-                        v-for="(role, index) in roles.data"
-                        :key="role.id"
+                        v-for="(permission, index) in permissions.data"
+                        :key="permission.id"
                         class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600"
                     >
                         <th
@@ -91,27 +90,18 @@
                             {{ index + 1 }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ role.name }}
+                            {{ permission.name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ role.guard_name }}
-                        </td>
-                        <td class="flex px-6 py-4">
-                            <p
-                                v-for="(permission, index) in roles.data[index]
-                                    .permissions"
-                                :key="index"
-                            >
-                                | {{ permission.name }} &nbsp;
-                            </p>
+                            {{ permission.guard_name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ role.created_at }}
+                            {{ permission.created_at }}
                         </td>
                         <td class="px-6 py-4 text-center">
                             <div class="inline-flex rounded-md shadow-sm">
                                 <Link
-                                    :href="route('role.edit', role.id)"
+                                    :href="route('permission.edit', permission.id)"
                                     type="button"
                                     class="inline-flex items-center py-1 px-2 text-sm font-medium text-white bg-blue-600 rounded-l-lg border border-gray-200 hover:bg-blue-400 hover:text-white focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-blue-700 dark:border-blue-600 dark:text-white dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:text-white"
                                 >
@@ -119,7 +109,7 @@
                                     Edit
                                 </Link>
                                 <Link
-                                    :href="route('role.destroy', role.id)"
+                                    :href="route('permission.destroy', permission.id)"
                                     method="delete"
                                     type="button"
                                     class="inline-flex items-center py-1 px-2 text-sm font-medium text-white bg-red-600 rounded-r-md border border-red-200 hover:bg-red-400 hover:text-white focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-red-700 dark:border-red-600 dark:text-white dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-500 dark:focus:text-white"
@@ -133,7 +123,7 @@
                 </tbody>
             </table>
         </div>
-        <Pagination class="mt-2 flex" :links="roles.links" />
+        <Pagination class="mt-2 flex" :links="permissions.links" />
     </div>
 </template>
 <script>
@@ -173,7 +163,6 @@ export default {
     },
     props: {
         errors: Object,
-        roles: Object,
         permissions: Object,
         flash: Object,
         q: String,
@@ -181,7 +170,7 @@ export default {
     methods: {
         search: _.debounce(function () {
             this.$inertia.replace(
-                route("role.index", {
+                route("permission.index", {
                     q: this.q,
                 })
             );

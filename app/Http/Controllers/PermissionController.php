@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
-class RoleController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,12 +15,11 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('User/Role/Index', [
+        return Inertia::render('User/Permission/Index', [
             'q'             => $request->q,
-            'roles'         => Role::when($request->q, function($query, $q){
+            'permissions'   => Permission::when($request->q, function($query, $q){
                 $query->where('name', 'LIKE', "%".$q."%");
-            })->with('permissions')->paginate(10)->onEachSide(1),
-            'permissions'   => Permission::latest()->get(),
+            })->paginate(10)->onEachSide(1)
         ]);
     }
 
@@ -47,21 +44,16 @@ class RoleController extends Controller
         $this->validate($request, [
             'name'          => ['required'],
             'guard_name'    => ['required'],
-            'permissions'   => ['required', 'array'],
         ]);
 
-        DB::beginTransaction();
         try {
-            $role = Role::create([
+            $permission = Permission::create([
                 'name'          => $request->name,
                 'guard_name'    => $request->guard_name,
             ]);
-            $role->givePermissionTo($request->permissions);
-            DB::commit();
-            return to_route('role.index')->with('success', 'Role '.$role->name.' created successfully.');
+            return to_route('permission.index')->with('success', 'Permission '.$permission->name.' created successfully.');
         } catch (\Throwable $th) {
-            DB::rollBack();
-            return to_route('role.index')->with('error', 'Error creating Role. '.$th->getMessage());
+            return to_route('permission.index')->with('error', 'Error creating Permission. '.$th->getMessage());
         }
     }
 
@@ -107,12 +99,6 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $role = Role::findOrFail($id);
-            $role->delete();
-            return to_route('role.index')->with('success', 'Role '.$role->name.' deleted successfully.');
-        } catch (\Throwable $th) {
-            return to_route('role.index')->with('error', 'Error deleting Role. '.$th->getMessage());
-        }
+        //
     }
 }
