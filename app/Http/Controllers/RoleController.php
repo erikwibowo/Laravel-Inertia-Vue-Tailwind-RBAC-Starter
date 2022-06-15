@@ -31,8 +31,9 @@ class RoleController extends Controller
             $roles->orderBy($request->field, $request->order);
         }
         return Inertia::render('User/Role/Index', [
-            'filters'   => $request->all(['search', 'field', 'order']),
-            'roles'     => $roles->with('permissions')->paginate(15),
+            'filters'       => $request->all(['search', 'field', 'order']),
+            'roles'         => $roles->with('permissions')->paginate(15),
+            'permissions'   => Permission::orderBy('id', 'desc')->get()
         ]);
     }
 
@@ -106,7 +107,25 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name'          => ['required'],
+            'guard_name'    => ['required'],
+            'permissions'   => ['required', 'array'],
+        ]);
+        DB::beginTransaction();
+        try {
+            $role = Role::find($id);
+            $role->update([
+                'name'          => $request->name,
+                'guard_name'    => $request->guard_name,
+            ]);
+            $role->syncPermissions($request->permissions);
+            DB::commit();
+            return back()->with('success', 'Role ' . $role->name . ' updated successfully.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', 'Error updating Role. ' . $th->getMessage());
+        }
     }
 
     /**

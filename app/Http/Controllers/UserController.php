@@ -14,6 +14,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:read user|create user|update user|delete user']);
+    }
+
     public function index(Request $request)
     {
         $this->validate($request, [

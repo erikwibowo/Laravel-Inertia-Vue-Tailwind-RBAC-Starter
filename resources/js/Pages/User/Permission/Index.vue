@@ -145,7 +145,6 @@ import {
     SortAscendingIcon,
     SortDescendingIcon,
 } from "@heroicons/vue/outline";
-import moment from "moment";
 import App from "../App.vue";
 import { pickBy, throttle} from "lodash";
 import Pagination from "../Components/Pagination.vue";
@@ -184,9 +183,6 @@ export default {
         filters: Object,
     },
     methods: {
-        moment(date) {
-            return moment(date).format("D-MM-YYYY HH:mm");
-        },
         order(field) {
             this.params.field = field;
             this.params.order = this.params.order === "asc" ? "desc" : "asc";

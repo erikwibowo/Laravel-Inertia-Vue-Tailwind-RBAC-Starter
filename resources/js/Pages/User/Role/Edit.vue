@@ -12,7 +12,7 @@
                     <h3
                         class="text-xl font-semibold text-gray-900 dark:text-white"
                     >
-                        Add Role
+                        Edit Role : {{ this.role ? this.role.name:'' }}
                     </h3>
                     <button
                         @click="$emit('close-modal')"
@@ -22,7 +22,7 @@
                         <XIcon class="w-5 h-5" />
                     </button>
                 </div>
-                <form @submit.prevent="store">
+                <form @submit.prevent="update">
                     <!-- Modal body -->
                     <div class="p-6 space-y-6">
                         <div class="mb-6">
@@ -33,7 +33,7 @@
                             >
                             <input
                                 v-model="form.name"
-                                v-on:keydown.enter.prevent="store"
+                                v-on:keydown.enter.prevent="update"
                                 type="text"
                                 id="name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -54,7 +54,7 @@
                             >
                             <input
                                 v-model="form.guard_name"
-                                v-on:keydown.enter.prevent="store"
+                                v-on:keydown.enter.prevent="update"
                                 type="text"
                                 id="guard_name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -146,6 +146,7 @@ export default {
         RefreshIcon,
     },
     props: {
+        role: Object,
         errors: Object,
         permissions: Object,
     },
@@ -160,11 +161,12 @@ export default {
         };
     },
     methods: {
-        store() {
+        update() {
             this.isLoading = true;
-            this.form.post(this.route("role.store"), {
+            this.form.put(this.route("role.update", this.role.id), {
                 onSuccess: (data) => {
                     this.isLoading = false;
+                    this.form.permissions = [];
                     this.$emit("close-modal");
                 },
                 onError: (data) => {
@@ -173,5 +175,14 @@ export default {
             });
         },
     },
+    watch:{
+        role: {
+            handler() {
+                this.form.name = this.role.name;
+                this.form.guard_name = this.role.guard_name;
+            },
+            deep: true,
+        },
+    }
 };
 </script>

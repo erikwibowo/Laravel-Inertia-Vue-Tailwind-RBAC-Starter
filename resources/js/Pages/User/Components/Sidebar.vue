@@ -30,6 +30,7 @@
                     </Link>
                 </li>
                 <li
+                    v-if="hasAnyPermission(['read user', 'create user', 'update user', 'delete user'])"
                     class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                 >
                     <Link
@@ -42,6 +43,7 @@
                     </Link>
                 </li>
                 <li
+                    v-if="hasAnyPermission(['read role', 'create role', 'update role', 'delete role'])"
                     class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                 >
                     <Link
@@ -54,6 +56,7 @@
                     </Link>
                 </li>
                 <li
+                    v-if="hasAnyPermission(['read permission', 'create permission', 'update permission', 'delete permission'])"
                     class="hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                 >
                     <Link
@@ -61,7 +64,7 @@
                         class="flex items-center py-2 px-8 text-base font-normal rounded-lg"
                         :class="{ active: $page.url.startsWith('/user/permission') }"
                     >
-                        <AdjustmentsIcon class="h-6 w-6" />
+                        <CogIcon class="h-6 w-6" />
                         <span class="ml-3">Permission</span>
                     </Link>
                 </li>
@@ -103,7 +106,7 @@
 </template>
 <script>
 import { Link } from "@inertiajs/inertia-vue3";
-import { UserIcon, HomeIcon, LogoutIcon, AdjustmentsIcon } from "@heroicons/vue/outline";
+import { UserIcon, HomeIcon, LogoutIcon, AdjustmentsIcon, CogIcon } from "@heroicons/vue/outline";
 export default {
     name: "Sidebar",
     components: {
@@ -111,7 +114,8 @@ export default {
         UserIcon,
         HomeIcon,
         LogoutIcon,
-        AdjustmentsIcon
+        AdjustmentsIcon,
+        CogIcon
     },
     data() {
         return {

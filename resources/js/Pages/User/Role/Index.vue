@@ -42,6 +42,7 @@
                         Add
                     </button>
                     <Create v-show="showModal" @close-modal="showModal = false" :errors="errors" :permissions="permissions" />
+                    <Edit v-show="showModalEdit" @close-modal="showModalEdit = false" :role="roleData" :errors="errors" :permissions="permissions" />
                 </div>
                 <div class="">
                     <div class="relative">
@@ -117,14 +118,15 @@
                         </td>
                         <td class="px-4 py-2 text-center">
                             <div class="inline-flex rounded-md shadow-sm">
-                                <Link
+                                <button
+                                    @click="showModalEdit = true, roleData = role"
                                     :href="route('role.edit', role.id)"
                                     type="button"
                                     class="inline-flex items-center py-1 px-2 text-sm font-medium text-white bg-blue-600 rounded-l-lg border border-gray-200 hover:bg-blue-400 hover:text-white focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-blue-700 dark:border-blue-600 dark:text-white dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:text-white"
                                 >
                                     <PencilIcon class="mr-2 w-4 h-4" />
                                     Edit
-                                </Link>
+                                </button>
                                 <Link
                                     :href="route('role.destroy', role.id)"
                                     method="delete"
@@ -145,7 +147,6 @@
 </template>
 <script>
 import { Head, Link } from "@inertiajs/inertia-vue3";
-import moment from "moment";
 import {
     HomeIcon,
     SearchIcon,
@@ -160,6 +161,7 @@ import App from "../App.vue";
 import { pickBy, throttle} from "lodash";
 import Pagination from "../Components/Pagination.vue";
 import Create from "./Create.vue";
+import Edit from "./Edit.vue";
 
 export default {
     layout: App,
@@ -168,6 +170,7 @@ export default {
         Link,
         Pagination,
         Create,
+        Edit,
         HomeIcon,
         SearchIcon,
         ChevronRightIcon,
@@ -185,6 +188,8 @@ export default {
                 order: this.filters.order,
             },
             showModal: false,
+            showModalEdit: false,
+            roleData: null
         };
     },
     props: {
@@ -195,9 +200,6 @@ export default {
         filters: Object,
     },
     methods: {
-        moment(date) {
-            return moment(date).format("D-MM-YYYY HH:mm");
-        },
         order(field) {
             this.params.field = field;
             this.params.order = this.params.order === "asc" ? "desc" : "asc";

@@ -15,6 +15,17 @@ createInertiaApp({
             .mixin({
                 methods: {
                     route,
+                    hasAnyPermission: function (permissions) {
+                        var allPermissions = this.$page.props.auth.can;
+                        var hasPermission = false;
+                        permissions.forEach(function (item) {
+                            if (allPermissions[item]) hasPermission = true;
+                        });
+                        return hasPermission;
+                    },
+                    moment: function (date) {
+                        return moment(date).format("D-MM-YYYY HH:mm");
+                    },
                 },
             })
             .mount(el);
