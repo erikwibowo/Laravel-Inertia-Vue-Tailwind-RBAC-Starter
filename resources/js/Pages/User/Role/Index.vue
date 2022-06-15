@@ -103,7 +103,7 @@
                                 :key="index"
                             >
                                 | {{ permission.name }} &nbsp;
-                            </p>
+                            </p>|
                         </td>
                         <td class="px-6 py-4">
                             {{ moment(role.created_at) }}

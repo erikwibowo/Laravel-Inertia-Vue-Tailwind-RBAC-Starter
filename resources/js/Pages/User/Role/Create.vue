@@ -68,7 +68,7 @@
                             </p>
                         </div>
                         <p
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            class="block text-sm font-medium text-gray-900 dark:text-gray-300"
                         >
                             Permission
                         </p>

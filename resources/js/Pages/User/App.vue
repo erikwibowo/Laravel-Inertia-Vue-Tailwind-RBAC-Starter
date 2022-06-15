@@ -1,9 +1,9 @@
 <template>
     <div class="flex w-full overflow-hidden">
-        <Sidebar />
+        <Sidebar v-if="isSidebarActive" />
         <div class="w-full min-h-screen block bg-white dark:bg-slate-900">
             <Toast :flash="flash" />
-            <Navbar />
+            <Navbar @toggle="handleSidebar" />
             <slot />
         </div>
     </div>
@@ -29,6 +29,17 @@ export default {
     props: {
         auth: Object,
         flash: Object,
+    },
+    data() {
+        return {
+            isSidebarActive: true,
+        };
+    },
+    methods: {
+        handleSidebar() {
+            // 👈 handle received event
+            this.isSidebarActive = !this.isSidebarActive;
+        },
     },
 };
 </script>

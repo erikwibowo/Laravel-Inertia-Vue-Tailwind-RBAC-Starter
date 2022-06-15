@@ -2,7 +2,7 @@
     <nav class="bg-white border-slate-200 px-2 sm:px-4 py-2.5 dark:bg-slate-800">
         <div class="flex flex-wrap justify-between items-center mx-auto">
             <div class="flex">
-                <button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 mr-3 text-sm text-slate-500 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 dark:focus:ring-slate-600">
+                <button  @click="toggleSidebar" data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 mr-3 text-sm text-slate-500 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 dark:focus:ring-slate-600">
                 <MenuAlt2Icon class="w-6 h-6" />
                 </button>
                 <Link :href="route('home')" class="flex items-center">
@@ -61,6 +61,9 @@ export default {
         },
         toggleDropDown() {
             this.isDropDownOpen = !this.isDropDownOpen
+        },
+        toggleSidebar() {
+            this.$emit("toggle") // 👈 emit event
         },
     }
 }
