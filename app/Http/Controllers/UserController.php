@@ -16,12 +16,22 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $this->validate($request, [
+            'field' => ['in:name,email,created_at'],
+            'order' => ['in:asc,desc'],
+        ]);
+
+        $users = User::query();
+        if ($request->has('search')) {
+            $users->where('name', 'LIKE', "%" . $request->search . "%");
+            $users->Orwhere('email', 'LIKE', "%" . $request->search . "%");
+        }
+        if ($request->has(['field', 'order'])) {
+            $users->orderBy($request->field, $request->order);
+        }
         return Inertia::render('User/User/Index', [
-            'q'     => $request->q,
-            'users' => User::when($request->q, function($query, $q){
-                $query->where('name', 'LIKE', "%".$q."%");
-                $query->Orwhere('email', 'LIKE', "%".$q."%");
-            })->orderBy('id', 'desc')->paginate(10)->onEachSide(1)
+            'filters'   => $request->all(['search', 'field', 'order']),
+            'users'     => $users->paginate(15),
         ]);
     }
 
@@ -108,9 +118,9 @@ class UserController extends Controller
                 'email'     => $request->email,
                 'password'  => $request->password ? Hash::make($request->password) : $user->password,
             ]);
-            return to_route('user.index')->with('success', 'User '.$user->name.' updated successfully.');
+            return back()->with('success', 'User '.$user->name.' updated successfully.');
         } catch (\Throwable $th) {
-            return to_route('user.index')->with('error', 'Error updating user. '.$th->getMessage());
+            return back()->with('error', 'Error updating user. '.$th->getMessage());
         }
     }
 
@@ -125,9 +135,9 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $user->delete();
-            return to_route('user.index')->with('success', 'User '.$user->name.' deleted successfully.');
+            return back()->with('success', 'User '.$user->name.' deleted successfully.');
         } catch (\Throwable $th) {
-            return to_route('user.index')->with('error', 'Error deleting user. '.$th->getMessage());
+            return back()->with('error', 'Error deleting user. '.$th->getMessage());
         }
     }
 }

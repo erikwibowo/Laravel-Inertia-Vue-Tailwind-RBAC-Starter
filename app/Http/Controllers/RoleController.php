@@ -17,12 +17,22 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        $this->validate($request, [
+            'field' => ['in:name,guard_name,created_at'],
+            'order' => ['in:asc,desc'],
+        ]);
+
+        $roles = Role::query();
+        if ($request->has('search')) {
+            $roles->where('name', 'LIKE', "%" . $request->search . "%");
+            $roles->Orwhere('guard_name', 'LIKE', "%" . $request->search . "%");
+        }
+        if ($request->has(['field', 'order'])) {
+            $roles->orderBy($request->field, $request->order);
+        }
         return Inertia::render('User/Role/Index', [
-            'q'             => $request->q,
-            'roles'         => Role::when($request->q, function($query, $q){
-                $query->where('name', 'LIKE', "%".$q."%");
-            })->with('permissions')->paginate(10)->onEachSide(1),
-            'permissions'   => Permission::latest()->get(),
+            'filters'   => $request->all(['search', 'field', 'order']),
+            'roles'     => $roles->with('permissions')->paginate(15),
         ]);
     }
 
@@ -58,10 +68,10 @@ class RoleController extends Controller
             ]);
             $role->givePermissionTo($request->permissions);
             DB::commit();
-            return to_route('role.index')->with('success', 'Role '.$role->name.' created successfully.');
+            return back()->with('success', 'Role '.$role->name.' created successfully.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return to_route('role.index')->with('error', 'Error creating Role. '.$th->getMessage());
+            return back()->with('error', 'Error creating Role. '.$th->getMessage());
         }
     }
 
@@ -110,9 +120,9 @@ class RoleController extends Controller
         try {
             $role = Role::findOrFail($id);
             $role->delete();
-            return to_route('role.index')->with('success', 'Role '.$role->name.' deleted successfully.');
+            return back()->with('success', 'Role '.$role->name.' deleted successfully.');
         } catch (\Throwable $th) {
-            return to_route('role.index')->with('error', 'Error deleting Role. '.$th->getMessage());
+            return back()->with('error', 'Error deleting Role. '.$th->getMessage());
         }
     }
 }

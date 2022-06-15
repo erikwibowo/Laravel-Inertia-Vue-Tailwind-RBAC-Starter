@@ -57,8 +57,7 @@
                             id="email-address-icon"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Search..."
-                            v-model="q"
-                            @keyup="search"
+                            v-model="params.search"
                         />
                     </div>
                 </div>
@@ -70,10 +69,24 @@
                     class="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400"
                 >
                     <tr>
-                        <th scope="col" class="px-6 py-3">#</th>
-                        <th scope="col" class="px-6 py-3">Name</th>
-                        <th scope="col" class="px-6 py-3">Guard</th>
-                        <th scope="col" class="px-6 py-3">Created</th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" v-on:click="order('name')">
+                            <span class="flex justify-between w-full">Name
+                                <SortAscendingIcon v-if="params.field === 'name' && params.order === 'asc'" class="w-4 h-4" />
+                                <SortDescendingIcon v-if="params.field === 'name' && params.order === 'desc'" class="w-4 h-4" />
+                            </span>
+                        </th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" v-on:click="order('guard_name')">
+                            <span class="flex justify-between w-full">Guard
+                                <SortAscendingIcon v-if="params.field === 'guard_name' && params.order === 'asc'" class="w-4 h-4" />
+                                <SortDescendingIcon v-if="params.field === 'guard_name' && params.order === 'desc'" class="w-4 h-4" />
+                            </span>
+                        </th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" v-on:click="order('created_at')">
+                            <span class="flex justify-between w-full">Created
+                                <SortAscendingIcon v-if="params.field === 'created_at' && params.order === 'asc'" class="w-4 h-4" />
+                                <SortDescendingIcon v-if="params.field === 'created_at' && params.order === 'desc'" class="w-4 h-4" />
+                            </span>
+                        </th>
                         <th scope="col" class="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
@@ -83,22 +96,16 @@
                         :key="permission.id"
                         class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600"
                     >
-                        <th
-                            scope="row"
-                            class="px-6 py-4 font-medium text-slate-600 dark:text-slate-400 whitespace-nowrap"
-                        >
-                            {{ index + 1 }}
-                        </th>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-2">
                             {{ permission.name }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-2">
                             {{ permission.guard_name }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-4 py-2">
                             {{ moment(permission.created_at) }}
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-4 py-2 text-center">
                             <div class="inline-flex rounded-md shadow-sm">
                                 <Link
                                     :href="route('permission.edit', permission.id)"
@@ -135,10 +142,12 @@ import {
     PlusIcon,
     PencilIcon,
     TrashIcon,
+    SortAscendingIcon,
+    SortDescendingIcon,
 } from "@heroicons/vue/outline";
 import moment from "moment";
 import App from "../App.vue";
-import _ from "lodash";
+import { pickBy, throttle} from "lodash";
 import Pagination from "../Components/Pagination.vue";
 import Create from "./Create.vue";
 
@@ -155,10 +164,16 @@ export default {
         PlusIcon,
         PencilIcon,
         TrashIcon,
+        SortAscendingIcon,
+        SortDescendingIcon,
     },
     data() {
         return {
-            q: this.q,
+            params: {
+                search: this.filters.search,
+                field: this.filters.field,
+                order: this.filters.order,
+            },
             showModal: false,
         };
     },
@@ -166,19 +181,28 @@ export default {
         errors: Object,
         permissions: Object,
         flash: Object,
-        q: String,
+        filters: Object,
     },
     methods: {
-        search: _.debounce(function () {
-            this.$inertia.replace(
-                route("permission.index", {
-                    q: this.q,
-                })
-            );
-        }, 500),
         moment(date) {
             return moment(date).format("D-MM-YYYY HH:mm");
-        }
+        },
+        order(field) {
+            this.params.field = field;
+            this.params.order = this.params.order === "asc" ? "desc" : "asc";
+        },
+    },
+    watch: {
+        params: {
+            handler: throttle(function() {
+                let params = pickBy(this.params);
+                this.$inertia.get(route("permission.index"), params, {
+                    replace: true,
+                    preserveState: true,
+                });
+            }, 150),
+            deep: true,
+        },
     },
 };
 </script>

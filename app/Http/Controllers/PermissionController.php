@@ -15,11 +15,22 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
+        $this->validate($request, [
+            'field' => ['in:name,guard_name,created_at'],
+            'order' => ['in:asc,desc'],
+        ]);
+
+        $permissions = Permission::query();
+        if ($request->has('search')) {
+            $permissions->where('name', 'LIKE', "%" . $request->search . "%");
+            $permissions->Orwhere('guard_name', 'LIKE', "%" . $request->search . "%");
+        }
+        if ($request->has(['field', 'order'])) {
+            $permissions->orderBy($request->field, $request->order);
+        }
         return Inertia::render('User/Permission/Index', [
-            'q'             => $request->q,
-            'permissions'   => Permission::when($request->q, function($query, $q){
-                $query->where('name', 'LIKE', "%".$q."%");
-            })->paginate(10)->onEachSide(1)
+            'filters'       => $request->all(['search', 'field', 'order']),
+            'permissions'   => $permissions->paginate(15),
         ]);
     }
 
@@ -51,9 +62,9 @@ class PermissionController extends Controller
                 'name'          => $request->name,
                 'guard_name'    => $request->guard_name,
             ]);
-            return to_route('permission.index')->with('success', 'Permission '.$permission->name.' created successfully.');
+            return back()->with('success', 'Permission '.$permission->name.' created successfully.');
         } catch (\Throwable $th) {
-            return to_route('permission.index')->with('error', 'Error creating Permission. '.$th->getMessage());
+            return back()->with('error', 'Error creating Permission. '.$th->getMessage());
         }
     }
 
@@ -99,6 +110,12 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $permission = Permission::findOrFail($id);
+            $permission->delete();
+            return back()->with('success', 'Permission ' . $permission->name . ' deleted successfully.');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Error deleting Permission. ' . $th->getMessage());
+        }
     }
 }

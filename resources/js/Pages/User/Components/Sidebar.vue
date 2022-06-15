@@ -1,5 +1,5 @@
 <template>
-    <aside class="flex min-h-screen" aria-label="Sidebar">
+    <aside class="hidden md:flex min-h-screen" aria-label="Sidebar">
         <div class="overflow-y-auto py-4 px-6 bg-slate-50 dark:bg-slate-800">
             <div class="flex flex-col items-center pb-5">
                 <img
